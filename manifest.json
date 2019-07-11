@@ -1,0 +1,16 @@
+{
+  "name": "Text2Pic2Tweet",
+  "version": "1.0",
+  "description": "A small plugin for twitter which lets you convert too big text on the fly to a picture to break the character limit option",
+  "background": {
+    "scripts": ["background.js"]
+  },
+  "content_scripts": [
+    {
+      "matches": ["http://twitter.com/*", "https://twitter.com/*"],
+      "js": ["jquery-2.2.4.min.js", "content.js"]
+    }
+  ],
+  "permissions": ["tabs"],
+  "manifest_version": 2
+}
