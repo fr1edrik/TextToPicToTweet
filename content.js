@@ -24,18 +24,23 @@ function findActionButtons() {
 
 	let custom = null
 	const selector = $('#customTP')[0]
-	// if (!selector) {
-	// 	custom = document.createElement('div')
-	// 	custom.innerText = 'TP'
-	// 	custom.setAttribute('id', 'customTP')
-	// 	custom.setAttribute('class', 'css-1dbjc4n')
-	// 	$(toolBar)
-	// 		.find(':first-child')
-	// 		.append(custom)
-	// } else {
-	// 	log(selector)
-	// 	custom = selector
-	// }
+	if (!selector) {
+		customDiv = document.createElement('div')
+		customBtn = document.createElement('BUTTON')
+		customBtn.innerText = 'TP'
+		customBtn.addEventListener('click', () => console.log('hello world'))
+
+		customDiv.setAttribute('id', 'customTP')
+		customDiv.setAttribute('class', 'css-1dbjc4n')
+
+		const first = $(toolBar).find(':first-child')[0]
+		$(first).append(customDiv)
+		$(customDiv).append(customBtn)
+	} else {
+		customDiv = selector
+	}
+
+	log(selector)
 }
 
 function convert() {
