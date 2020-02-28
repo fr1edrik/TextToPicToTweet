@@ -18,6 +18,22 @@ function log(string) {
 	console.log(string)
 }
 
+function Obs(selector) {
+	var observer = new IntersectionObserver(
+		function(entries) {
+			// isIntersecting is true when element and viewport are overlapping
+			// isIntersecting is false when element and viewport don't overlap
+			if (entries[0].isIntersecting === false) {
+				observer.unobserve(selector)
+				selector.remove()
+			}
+		},
+		{ threshold: [1] },
+	)
+
+	observer.observe(selector)
+}
+
 function findActionButtons() {
 	const toolBar = $('div[data-testid="toolBar"]')[0]
 	if (!toolBar) return
@@ -28,7 +44,7 @@ function findActionButtons() {
 		customDiv = document.createElement('div')
 		customBtn = document.createElement('BUTTON')
 		customBtn.innerText = 'TP'
-		customBtn.addEventListener('click', () => console.log('hello world'))
+		customBtn.addEventListener('click', () => convert())
 
 		customDiv.setAttribute('id', 'customTP')
 		customDiv.setAttribute('class', 'css-1dbjc4n')
@@ -36,6 +52,8 @@ function findActionButtons() {
 		const first = $(toolBar).find(':first-child')[0]
 		$(first).append(customDiv)
 		$(customDiv).append(customBtn)
+
+		Obs(customDiv)
 	} else {
 		customDiv = selector
 	}
@@ -45,16 +63,26 @@ function findActionButtons() {
 
 function convert() {
 	const cv = document.createElement('CANVAS').getContext('2d')
-	const ta = document.getElementById('ta')
+	const val = $('.DraftEditor-root')[0].innerText
 	const image = document.createElement('IMAGE')
 
-	const val = ta.value
+	const lineHeight = 15
 
-	cv.canvas.width = cv.measureText(val).width
+	const arr = val.match(/(.{30}[.\S]*)/g)
 
-	cv.fillText(val, 0, 10)
-	cvfont = '30px Arial'
-	image.src = cv.canvas.toDataURL()
+	cv.font = '30px Arial'
 
-	console.log(image.src)
+	log(arr)
+	// cv.canvas.width = cv.measureText(arr[0]).width
+
+	for (let i = 0; i < arr.length; i++) {
+		cv.fillText(arr[i], 0, 30 + i * lineHeight)
+
+		if (cv.canvas.width < cv.measureText(arr[i]).width)
+			cv.canvas.width = cv.measureText(arr[i]).width
+	}
+
+	// image.src = cv.canvas.toDataURL()
+
+	console.log(cv.canvas.toDataURL())
 }
